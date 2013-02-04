@@ -1,17 +1,26 @@
 #! /usr/bin/python
+import subprocess
+import re
 
-import sys
+while True:
+    # prevents lots of python error output
+    try:
+        s = raw_input('Enter Question, Command, Or Statement => ')
+    except:
+        break
 
-words = ('toys', 'fun', 'syot', 'nuf',)
+    # check if you should exit
+    if s.strip().lower() == 'exit':
+        break
 
-cqs = raw_input("Enter a command, question, or statement: ")
-
-if(cqs in words):
-    print str.strip(cqs)
-
-else:
-    print "cqs was not found try again!"
-    
+    # try to run command
+    try:
+        cmd = subprocess.Popen(re.split(r'\s+', s), stdout=subprocess.PIPE)
+        cmd_out = cmd.stdout.read()
 
 
+        # Process output
+        print "=>" + cmd_out
 
+    except OSError:
+        print 'Invalid command'
